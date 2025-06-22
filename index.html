@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>學生報名與繳費</title>
+</head>
+<body>
+  <h1>學生報名與繳費</h1>
+  <form id="enrollForm">
+    <label>StudentID: <input type="text" name="studentId" required /></label><br />
+    <label>ClassID: <input type="text" name="classId" required /></label><br />
+    <label>Term: <input type="text" name="term" value="2025春季" required /></label><br />
+    <label>繳費金額: <input type="number" name="amount" required /></label><br />
+    <label>繳費方式: <input type="text" name="method" value="現金" required /></label><br />
+    <button type="submit">送出報名與繳費</button>
+  </form>
+  <p id="result"></p>
+
+  <script>
+    document.getElementById('enrollForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch('/api/enroll', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+      document.getElementById('result').innerText = result.message;
+    });
+  </script>
+</body>
+</html>
